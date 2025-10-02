@@ -6,25 +6,33 @@ const addItem = require('./routes/addItem');
 const updateItem = require('./routes/updateItem');
 const deleteItem = require('./routes/deleteItem');
 
+// Middleware
 app.use(express.json());
 app.use(express.static(__dirname + '/static'));
 
+// Routes
 app.get('/items', getItems);
 app.post('/items', addItem);
 app.put('/items/:id', updateItem);
 app.delete('/items/:id', deleteItem);
 
-db.init().then(() => {
-    app.listen(3000, () => console.log('Listening on port 3000'));
-}).catch((err) => {
-    console.error(err);
+// Initialize DB and start server
+db.init()
+  .then(() => {
+    // Use process.env.PORT for Cloud Run, fallback to 3000 locally
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error('Failed to initialize DB:', err);
     process.exit(1);
-});
+  });
 
+// Graceful shutdown
 const gracefulShutdown = () => {
-    db.teardown()
-        .catch(() => {})
-        .then(() => process.exit());
+  db.teardown()
+    .catch(() => {})
+    .then(() => process.exit());
 };
 
 process.on('SIGINT', gracefulShutdown);
