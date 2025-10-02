@@ -6,7 +6,6 @@ substitutions:
   _REGION: "us-central1"
   _REPO: "saravanan-101013057"
   _IMAGE: "app"
-  _PORT: "3000"   # since your app uses port 3000
 
 images:
   - "us-central1-docker.pkg.dev/$PROJECT_ID/${_REPO}/${_IMAGE}:$SHORT_SHA"

@@ -19,7 +19,7 @@ app.delete('/items/:id', deleteItem);
 // Initialize DB and start server
 db.init()
   .then(() => {
-    // Use process.env.PORT for Cloud Run, fallback to 3000 locally
+    // Use Cloud Run's PORT if provided, else fallback to 3000 locally
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
   })
